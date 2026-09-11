@@ -64,13 +64,20 @@ h2{font-size:clamp(2rem,3.5vw,3.45rem);line-height:1.02;letter-spacing:-.045em;m
   position:sticky;top:0;z-index:30;background:rgba(255,255,255,.96);
   backdrop-filter:blur(10px);border-bottom:1px solid #edf0e8
 }
-.nav-inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:22px}
+.nav-inner{height:70px;display:flex;align-items:center;justify-content:space-between;gap:22px;position:relative}
 .brand{display:flex;align-items:center;gap:12px}
 .brand-kme{font-size:2rem;font-weight:950;letter-spacing:.08em}
 .brand-kme span{color:var(--green)}
 .brand-copy{font-size:.68rem;font-weight:500;line-height:1.18;letter-spacing:.035em;text-transform:uppercase;color:#202326}
 .nav-links{display:flex;gap:28px;align-items:center;font-size:.84rem;font-weight:500;letter-spacing:.01em}
 .nav-links .btn{min-height:40px;padding:0 17px;font-size:.79rem;font-weight:650;letter-spacing:.005em}
+.menu-toggle{display:none;width:42px;height:42px;border:1px solid var(--line);border-radius:10px;background:#fff;align-items:center;justify-content:center;cursor:pointer;padding:0;color:#202326}
+.menu-toggle span,.menu-toggle span::before,.menu-toggle span::after{display:block;width:20px;height:2px;background:currentColor;border-radius:2px;position:relative;transition:.18s ease}
+.menu-toggle span::before,.menu-toggle span::after{content:"";position:absolute;left:0}
+.menu-toggle span::before{top:-6px}.menu-toggle span::after{top:6px}
+.menu-toggle[aria-expanded="true"] span{background:transparent}
+.menu-toggle[aria-expanded="true"] span::before{top:0;transform:rotate(45deg)}
+.menu-toggle[aria-expanded="true"] span::after{top:0;transform:rotate(-45deg)}
 
 /* HERO */
 .hero{background:#fff}
@@ -224,7 +231,6 @@ footer{padding:22px 0 34px}
 
 /* responsive */
 @media(max-width:1050px){
-  .nav-links a:not(.btn){display:none}
   .info-grid{grid-template-columns:1fr}
   .outcome-box{border-left:none;border-top:1px solid var(--line);padding-left:0;padding-top:28px}
   .program-grid{grid-template-columns:repeat(2,1fr)}
@@ -235,6 +241,19 @@ footer{padding:22px 0 34px}
   .enroll-grid{grid-template-columns:1fr 1fr}
   .final-inner{grid-template-columns:1fr}
   .final .btn{justify-self:start}
+}
+@media(max-width:900px){
+  .nav-inner{height:64px}
+  .menu-toggle{display:inline-flex;flex:0 0 42px}
+  .nav-links{
+    display:none;position:absolute;top:calc(100% + 1px);left:0;right:0;
+    flex-direction:column;align-items:stretch;gap:0;background:#fff;
+    border:1px solid var(--line);border-top:none;border-radius:0 0 14px 14px;
+    padding:8px 16px 12px;box-shadow:0 14px 28px rgba(0,0,0,.08)
+  }
+  .nav-links.open{display:flex}
+  .nav-links a{display:block !important;width:100%;padding:12px 4px;border-bottom:1px solid #edf0e8;font-size:.92rem}
+  .nav-links a:last-child{border-bottom:none}
 }
 @media(max-width:720px){
   .wrap{width:min(var(--max),calc(100% - 24px))}
@@ -249,7 +268,7 @@ footer{padding:22px 0 34px}
   .program-grid{grid-template-columns:1fr}
   .module{min-height:auto}
   .module-copy{min-height:auto;padding-bottom:14px}
-  .module-img{aspect-ratio:16/10;object-fit:cover}
+  .module-img{aspect-ratio:9/10;object-fit:contain;object-position:center;background:#fff}
   .signup-steps{grid-template-columns:1fr}
   .enroll-grid{grid-template-columns:1fr}
   .footer-inner{flex-direction:column;align-items:flex-start}
@@ -392,12 +411,12 @@ footer{padding:22px 0 34px}
         <div class="acmdba-copy">Asociación Civil de Medicina del Deporte de Buenos Aires</div>
       </div>
     </div>
-    <nav class="nav-links">
+    <button class="menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-nav"><span></span></button>
+    <nav class="nav-links" id="primary-nav">
       <a href="#inicio">Inicio</a>
       <a href="#programa">Programa</a>
       <a href="#inscripcion">Inscripción</a>
       <a href="#contacto">Consultas</a>
-      <a class="btn primary" href="#inscripcion">Inscribirme ahora →</a>
     </nav>
   </div>
 </header>
@@ -662,6 +681,27 @@ footer{padding:22px 0 34px}
   </div>
 </footer>
 
+
+<script>
+(function(){
+  var toggle=document.querySelector('.menu-toggle');
+  var menu=document.getElementById('primary-nav');
+  if(toggle && menu){
+    toggle.addEventListener('click',function(){
+      var isOpen=menu.classList.toggle('open');
+      toggle.setAttribute('aria-expanded',isOpen?'true':'false');
+      toggle.setAttribute('aria-label',isOpen?'Cerrar menú':'Abrir menú');
+    });
+    menu.querySelectorAll('a').forEach(function(link){
+      link.addEventListener('click',function(){
+        menu.classList.remove('open');
+        toggle.setAttribute('aria-expanded','false');
+        toggle.setAttribute('aria-label','Abrir menú');
+      });
+    });
+  }
+})();
+</script>
 
 <script>
 document.querySelectorAll('.copy-btn').forEach(function(btn){
