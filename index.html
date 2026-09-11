@@ -225,9 +225,40 @@ h2{font-size:clamp(2rem,3.5vw,3.45rem);line-height:1.02;letter-spacing:-.045em;m
 .final p{margin:0}
 .final .btn{justify-self:end}
 
-/* FOOTER */
-footer{padding:22px 0 34px}
-.footer-inner{display:flex;justify-content:space-between;align-items:center;gap:22px;font-size:.86rem;color:#4d5458}
+/* FOOTER — mirrors the visual language of the header */
+footer{
+  padding:0;
+  background:#fff;
+  border-top:1px solid var(--line);
+}
+.footer-inner{
+  min-height:92px;
+  display:flex;
+  justify-content:space-between;
+  align-items:center;
+  gap:28px;
+}
+.footer-brand{display:flex;align-items:center;gap:12px;min-width:0}
+.footer-brand .brand-kme{font-size:2rem;letter-spacing:.08em;line-height:1}
+.footer-brand .brand-copy{font-size:.66rem;font-weight:500;letter-spacing:.025em;line-height:1.18}
+.footer-brand .acmdba-brand{margin-left:6px;padding-left:18px}
+.footer-brand .acmdba-brand img{width:50px;height:50px;flex-basis:50px}
+.footer-brand .acmdba-copy{font-size:.66rem;font-weight:500;letter-spacing:.025em;line-height:1.18}
+.footer-contacts{display:flex;align-items:center;gap:24px;flex-wrap:wrap;justify-content:flex-end}
+.footer-contact{
+  display:inline-flex;align-items:center;gap:9px;
+  color:#202326;text-decoration:none;font-size:.86rem;font-weight:500;
+  transition:color .2s ease,transform .2s ease
+}
+.footer-contact:hover{color:var(--green);transform:translateY(-1px)}
+.footer-contact .contact-icon{
+  width:34px;height:34px;border-radius:50%;display:grid;place-items:center;
+  background:var(--green-soft);color:var(--green);flex:0 0 34px
+}
+.footer-contact .contact-icon svg{width:18px;height:18px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+.footer-contact .contact-text{display:flex;flex-direction:column;line-height:1.18}
+.footer-contact .contact-label{font-size:.67rem;letter-spacing:.08em;text-transform:uppercase;color:#6d7478;margin-bottom:2px}
+.footer-contact .contact-value{font-size:.84rem;color:#202326}
 
 /* responsive */
 @media(max-width:1050px){
@@ -271,7 +302,9 @@ footer{padding:22px 0 34px}
   .module-img{aspect-ratio:9/10;object-fit:contain;object-position:center;background:#fff}
   .signup-steps{grid-template-columns:1fr}
   .enroll-grid{grid-template-columns:1fr}
-  .footer-inner{flex-direction:column;align-items:flex-start}
+  .footer-inner{flex-direction:column;align-items:flex-start;padding:18px 0 20px}
+  .footer-brand{width:100%}
+  .footer-contacts{width:100%;justify-content:flex-start;gap:14px 22px;padding-top:4px}
 }
 
 .acmdba-brand{
@@ -285,17 +318,18 @@ footer{padding:22px 0 34px}
   font-size:.66rem;line-height:1.18;font-weight:500;letter-spacing:.025em;text-transform:uppercase;color:#202326;
   max-width:190px
 }
-.footer-brands{display:flex;align-items:center;gap:18px;flex-wrap:wrap}
-.footer-acmdba{display:flex;align-items:center;gap:10px}
-.footer-acmdba img{width:48px;height:48px;object-fit:contain}
-.footer-acmdba span{font-weight:800;line-height:1.15}
 @media(max-width:860px){
   .acmdba-copy{display:none}
   .acmdba-brand{padding-left:10px;margin-left:0}
 }
 @media(max-width:620px){
   .acmdba-brand img{width:40px;height:40px;flex-basis:40px}
-  .footer-acmdba img{width:42px;height:42px}
+  .footer-brand .brand-kme{font-size:1.65rem}
+  .footer-brand .brand-copy{display:none}
+  .footer-brand .acmdba-brand{padding-left:12px}
+  .footer-brand .acmdba-copy{display:block;max-width:185px;font-size:.61rem}
+  .footer-contacts{flex-direction:column;align-items:flex-start;gap:10px}
+  .footer-contact{width:100%}
 }
 
 
@@ -670,14 +704,36 @@ footer{padding:22px 0 34px}
 
 <footer id="contacto">
   <div class="wrap footer-inner">
-    <div class="footer-brands">
-      <div><strong>KME — Kweitel Medical Education</strong></div>
-      <div class="footer-acmdba">
+    <div class="footer-brand" aria-label="KME y ACMDBA">
+      <div class="brand-kme">K<span>M</span>E</div>
+      <div class="brand-copy">Kweitel Medical<br>Education</div>
+      <div class="acmdba-brand" aria-label="ACMDBA">
         <img src="assets/logo-acmdba.png" alt="Logo ACMDBA">
-        <span>Asociación Civil de Medicina del Deporte<br>de Buenos Aires</span>
+        <div class="acmdba-copy">Asociación Civil de Medicina del Deporte de Buenos Aires</div>
       </div>
     </div>
-    <div>Consultas: <a href="mailto:amdba.argentina@gmail.com">amdba.argentina@gmail.com</a></div>
+
+    <div class="footer-contacts" aria-label="Canales de contacto">
+      <a class="footer-contact" href="mailto:amdba.argentina@gmail.com" aria-label="Enviar correo a ACMDBA">
+        <span class="contact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M3 5h18v14H3z"/><path d="m3 6 9 7 9-7"/></svg>
+        </span>
+        <span class="contact-text">
+          <span class="contact-label">Mail</span>
+          <span class="contact-value">amdba.argentina@gmail.com</span>
+        </span>
+      </a>
+
+      <a class="footer-contact" href="https://wa.me/5492478463471?text=Hola%20ACMDBA%20necesito%20" target="_blank" rel="noopener" aria-label="Contactar a ACMDBA por WhatsApp">
+        <span class="contact-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M20.5 11.5a8.5 8.5 0 0 1-12.7 7.4L3 20l1.2-4.5a8.5 8.5 0 1 1 16.3-4z"/><path d="M8.5 8.2c.4 2.8 2.5 5 5.3 5.7l1.5-1.5 2.2.9c-.3 1.7-1.8 3-3.6 3-4.2-.3-7.6-3.7-7.9-7.9 0-1.8 1.3-3.3 3-3.6l.9 2.2z"/></svg>
+        </span>
+        <span class="contact-text">
+          <span class="contact-label">WhatsApp</span>
+          <span class="contact-value">+54 9 2478 463471</span>
+        </span>
+      </a>
+    </div>
   </div>
 </footer>
 
